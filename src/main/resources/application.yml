@@ -1,0 +1,78 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: lottery-web
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    schema: classpath:db/schema.sql
+    data: classpath:db/data.sql
+    url: jdbc:p6spy:h2:mem:test
+    username: root
+    password: test
+    #    # mysql 连接配置
+    #    # driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+#    url: jdbc:p6spy:mysql://192.168.3.6:8306/games?characterEncoding=utf8&nullCatalogMeansCurrent=true
+#    username: root
+#    password: abc123
+#    schema: classpath:db/schema.sql
+#    data: classpath:db/data.sql
+#    initialize: true
+#    initialization-mode: always
+#  redis:
+#    host: 10.55.0.103 # Redis服务器地址
+#   database: 0 # Redis数据库索引（默认为0）
+#    port: 6379 # Redis服务器连接端口
+#    password: # Redis服务器连接密码（默认为空）
+#    timeout: 300ms # 连接超时时间（毫秒）
+
+  kafka:
+    bootstrap-servers: 10.55.56.101:9092 #指定kafka server的地址，集群配多个，中间，逗号隔开
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: default_consumer_group #群组ID
+      enable-auto-commit: true
+      auto-commit-interval: 1000
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+grpc:
+  client:
+    lottery-service:
+      address: 'static://127.0.0.1:9090'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
+knife4j:
+  basic:
+      ## 开启Swagger的Basic认证功能,默认是false
+      enable: true
+      ### Basic认证用户名
+      username: sinodata
+      ### Basic认证密码
+      password: 123
+
+opentracing:
+  jaeger:
+    enabled: false
+    udp-sender:
+      host: localhost
+      port: 6831
+
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#        include: ["prometheus"]
+#      base-path: "/"
+
+restsvc:
+  url: "http://localhost:8090"
