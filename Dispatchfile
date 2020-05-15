@@ -65,6 +65,18 @@ task "build": {
 
   steps: [
     {
+      name: "mvn-verify"
+      image: "maven:3.6-jdk-8-slim"
+      command: [ "mvn", "verify" ]
+      workingDir: "/workspace/src-git"
+      volumeMounts: [
+        {
+          name: "cache-volume"
+          mountPath: "/root/.m2"
+        }
+      ]
+    },
+    {
       name: "build-image"
       image: "gcr.io/kaniko-project/executor:v0.14.0"
       workingDir: "/workspace/src-git"
@@ -96,6 +108,10 @@ actions: [
     on push: {
       branches: ["master"]
     }
+  },
+  {
+    tasks: ["test"]
+    on push branches: ["!master","*"]
   },
   {
     tasks: ["build"]
