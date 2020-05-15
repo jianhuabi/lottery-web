@@ -7,12 +7,12 @@ common_env: [
   {
     name: "AWS_ACCESS_KEY_ID"
     valueFrom secretKeyRef name: "s3-config"
-    valueFrom secretKeyRef key: "minio"
+    valueFrom secretKeyRef key: "AWS_ACCESS_KEY_ID"
   },
   {
     name: "AWS_SECRET_ACCESS_KEY"
     valueFrom secretKeyRef name: "s3-config"
-    valueFrom secretKeyRef key: "RhgFiN5e3kLCkYNaDaSWCzG0t60uavH2ZdBXl5ZSnCbXQ9zI5o5eMkdkOCaeOjzx"
+    valueFrom secretKeyRef key: "AWS_SECRET_ACCESS_KEY"
   },
   {
     name: "PLUGIN_PATH_STYLE"
@@ -28,7 +28,7 @@ common_env: [
   },
   {
     name: "PLUGIN_ENDPOINT"
-    value: "http://minio.velero.svc:9000"
+    value: "http://s3-us-east-1.dispatch"
   },
   {
     name: "PLUGIN_REGION"
