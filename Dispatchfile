@@ -5,12 +5,34 @@ github_user: "jianhuabi"
 
 common_env: [
   {
+    name: "AWS_ACCESS_KEY_ID"
+    valueFrom secretKeyRef name: "s3-config"
+    valueFrom secretKeyRef key: "minio"
+  },
+  {
+    name: "AWS_SECRET_ACCESS_KEY"
+    valueFrom secretKeyRef name: "s3-config"
+    valueFrom secretKeyRef key: "RhgFiN5e3kLCkYNaDaSWCzG0t60uavH2ZdBXl5ZSnCbXQ9zI5o5eMkdkOCaeOjzx"
+  },
+  {
     name: "PLUGIN_PATH_STYLE"
     value: "true"
   },
   {
     name: "PLUGIN_MOUNT"
     value: "/root/.m2"
+  },
+  {
+    name: "PLUGIN_BUCKET"
+    value: "artifacts"
+  },
+  {
+    name: "PLUGIN_ENDPOINT"
+    value: "http://minio.velero.svc:9000"
+  },
+  {
+    name: "PLUGIN_REGION"
+    value: "us-east-1"
   },...
 ]
 
@@ -38,10 +60,49 @@ task "test": {
 
   steps: [
     {
+      name: "restore-cache"
+      image: "meltwater/drone-cache"
+      env: common_env +
+      [
+        {
+          name: "PLUGIN_RESTORE"
+          value: "true"
+        }
+      ]
+      volumeMounts: [
+        {
+          name: "cache-volume"
+          mountPath: "/root/.m2"
+        }
+      ]
+    },
+    {
       name: "test"
       image: "maven:3.6-jdk-8-slim"
       command: [ "mvn", "test" ]
       workingDir: "/workspace/src-git"
+      volumeMounts: [
+        {
+          name: "cache-volume"
+          mountPath: "/root/.m2"
+        }
+      ]
+    },
+    {
+      name: "rebuild-cache"
+      image: "meltwater/drone-cache"
+      env: common_env +
+      [
+        {
+          name: "PLUGIN_RESTORE"
+          value: "false"
+        },
+        {
+          name: "PLUGIN_REBUILD"
+          value: "true"
+        }
+      ]
+
       volumeMounts: [
         {
           name: "cache-volume"
