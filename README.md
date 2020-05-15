@@ -1,1 +1,1 @@
-# lottery-web for sinodata CI/CD demo with D2iQ Dispatch
+# SinoData Spring Boot Lottery-web Application for Dispatch
