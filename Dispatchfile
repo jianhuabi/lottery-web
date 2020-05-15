@@ -38,49 +38,10 @@ task "test": {
 
   steps: [
     {
-      name: "restore-cache"
-      image: "meltwater/drone-cache"
-      env: common_env +
-      [
-        {
-          name: "PLUGIN_RESTORE"
-          value: "true"
-        }
-      ]
-      volumeMounts: [
-        {
-          name: "cache-volume"
-          mountPath: "/root/.m2"
-        }
-      ]
-    },
-    {
       name: "test"
       image: "maven:3.6-jdk-8-slim"
       command: [ "mvn", "test" ]
       workingDir: "/workspace/src-git"
-      volumeMounts: [
-        {
-          name: "cache-volume"
-          mountPath: "/root/.m2"
-        }
-      ]
-    },
-    {
-      name: "rebuild-cache"
-      image: "meltwater/drone-cache"
-      env: common_env +
-      [
-        {
-          name: "PLUGIN_RESTORE"
-          value: "false"
-        },
-        {
-          name: "PLUGIN_REBUILD"
-          value: "true"
-        }
-      ]
-
       volumeMounts: [
         {
           name: "cache-volume"
@@ -104,60 +65,15 @@ task "build": {
 
   steps: [
     {
-      name: "restore-cache"
-      image: "meltwater/drone-cache"
-      env: common_env +
-      [
-        {
-          name: "PLUGIN_RESTORE"
-          value: "true"
-        }
-      ]
-      volumeMounts: [
-        {
-          name: "cache-volume"
-          mountPath: "/root/.m2"
-        }
-      ]
-    },
-    {
-      name: "build"
-      image: "maven:3.6-jdk-8-slim"
-      command: [ "mvn", "verify" ]
-      workingDir: "/workspace/src-git"
-      volumeMounts: [
-        {
-          name: "cache-volume"
-          mountPath: "/root/m2"
-        }
-      ]
-    },
-    {
-      name: "rebuild-cache"
-      image: "meltwater/drone-cache"
-      env: common_env +
-      [
-        {
-          name: "PLUGIN_RESTORE"
-          value: "false"
-        },
-        {
-          name: "PLUGIN_REBUILD"
-          value: "true"
-        }
-      ]
-
-      volumeMounts: [
-        {
-          name: "cache-volume"
-          mountPath: "/root/.m2"
-        }
-      ]
-    },
-    {
       name: "build-image"
       image: "gcr.io/kaniko-project/executor:v0.14.0"
       workingDir: "/workspace/src-git"
+      volumeMounts: [
+        {
+          name: "cache-volume"
+          mountPath: "/root/.m2"
+        }
+      ]
       args: [
         "--destination=$(outputs.resources.docker-image.url)",
         "--context=/workspace/src-git",
