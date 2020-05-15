@@ -126,6 +126,23 @@ task "build": {
 
   steps: [
     {
+          name: "restore-cache"
+          image: "meltwater/drone-cache"
+          env: common_env +
+          [
+            {
+              name: "PLUGIN_RESTORE"
+              value: "true"
+            }
+          ]
+          volumeMounts: [
+            {
+              name: "cache-volume"
+              mountPath: "/root/.m2"
+            }
+          ]
+    },
+    {
       name: "mvn-verify"
       image: "maven:3.6-jdk-8-slim"
       command: [ "mvn", "verify" ]
@@ -136,6 +153,28 @@ task "build": {
           mountPath: "/root/.m2"
         }
       ]
+    },
+    {
+          name: "rebuild-cache"
+          image: "meltwater/drone-cache"
+          env: common_env +
+          [
+            {
+              name: "PLUGIN_RESTORE"
+              value: "false"
+            },
+            {
+              name: "PLUGIN_REBUILD"
+              value: "true"
+            }
+          ]
+
+          volumeMounts: [
+            {
+              name: "cache-volume"
+              mountPath: "/root/.m2"
+            }
+          ]
     },
     {
       name: "build-image"
