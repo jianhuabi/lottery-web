@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lottery-web-app
+spec:
+  selector:
+    matchLabels:
+      app: lottery-web-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: lottery-web-app
+    spec:
+      containers:
+        - name: app
+          resources:
+            limits:
+              memory: 1250Mi
+            requests:
+              memory: 1250Mi
+          env:
+            - name: MEM_TOTAL_MB
+              valueFrom:
+                resourceFieldRef:
+                  resource: limits.memory
