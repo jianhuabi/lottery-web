@@ -1,0 +1,18 @@
+# Adds namespace to all resources.
+namespace: my-namespace
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+  - ../../base/
+
+patchesStrategicMerge:
+  - lotteryweb-configmap.yaml
+  - memorylimit_patch.yaml
+  - healthcheck_patch.yaml
+
+configMapGenerator:
+- name: lotteryweb-configmap
+  files:
+  - application.yml

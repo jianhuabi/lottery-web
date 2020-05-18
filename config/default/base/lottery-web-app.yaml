@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lottery-web-app
+spec:
+  selector:
+    matchLabels:
+      app: lottery-web-app
+  template:
+    metadata:
+      labels:
+        app: lottery-web-app
+    spec:
+      containers:
+        - name: app
+          image: foo/bar:latest
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: lotteryweb-config
+              mountPath: /config
+      volumes:
+        - name: "lotteryweb-config"
+          configMap:
+            name: "lotteryweb-configmap"
