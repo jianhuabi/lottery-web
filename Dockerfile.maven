@@ -1,0 +1,6 @@
+FROM maven:3.6-jdk-8-slim
+
+ENV MVN_APP_NAME maven
+ENV MVN_HOME /usr/share/${MVN_APP_NAME}
+
+ADD settings.xml ${MVN_HOME}/conf/

@@ -78,7 +78,7 @@ task "test": {
     },
     {
       name: "test"
-      image: "maven:3.6-jdk-8-slim"
+      image: "michaelbi/maven:3.6-jdk-8-slim"
       command: [ "mvn", "test" ]
       workingDir: "/workspace/src-git"
       volumeMounts: [
