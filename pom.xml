@@ -27,7 +27,7 @@
         <security.oauth.version>2.3.6.RELEASE</security.oauth.version>
         <!-- 数据库 -->
         <mybatis-plus.version>3.3.1</mybatis-plus.version>
-        <mysql.connector.version>8.0.19</mysql.connector.version>
+        <mysql.connector.version>8.0.28</mysql.connector.version>
         <!-- sql 分析工具 开发测试阶段用于sql性能分析 -->
         <p6spy.version>3.8.5</p6spy.version>
         <!-- 验证码 -->
