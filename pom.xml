@@ -33,7 +33,7 @@
         <!-- 验证码 -->
         <kaptcha.version>1.6.2</kaptcha.version>
         <!-- api文档自动生成 -->
-        <swagger.fox.version>2.9.2</swagger.fox.version>
+        <swagger.fox.version>2.10.0</swagger.fox.version>
         <swagger.core.version>1.5.22</swagger.core.version>
         <knife4j.version>2.0.1</knife4j.version>
         <!-- lcn 分布式事务 -->
